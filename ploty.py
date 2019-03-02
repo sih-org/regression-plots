@@ -22,6 +22,8 @@ print(data)
 x=data['Total plastic waste '][:].values
 y = data['Residential & commercial (tonnes)'][:].values
 x1=data['Total plastic waste '][:].values
+x2=data['Total plastic waste '][2014-1990]
+print(x2)
 
 # transforming the data to include another axis
 x = x[:, np.newaxis]
@@ -36,19 +38,22 @@ model = LinearRegression()
 model.fit(x_poly, y)
 y_poly_pred = model.predict(x_poly)
 
-rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
-r2 = r2_score(y,y_poly_pred)
-print(rmse)
-print(r2)
+#rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
+#r2 = r2_score(y,y_poly_pred)
+#print(rmse)
+#print(r2)
 
 
 #model.predict(polynomial_features.fit_transform(0.5))
 k=model.predict(polynomial_features.fit_transform(x1))
+p=[]
 for i in k:
         for j in i:
             value=str(j)
             value2=value.replace(',', '.')
             print(value2)
+            p.append(value2)
+        
 print(model.predict(polynomial_features.fit_transform(x)))
 plt.scatter(x, y, s=20)
 # sort the values of x before line plot
@@ -57,16 +62,5 @@ sorted_zip = sorted(zip(x,y_poly_pred), key=sort_axis)
 x, y_poly_pred = zip(*sorted_zip)
 k=plt.plot(x, y_poly_pred, color='m')
 plt.show()
-app = dash.Dash()
-app.layout = html.Div(children=[
-    html.H1(children='Dash Tutorials'),
-    dcc.Graph()
-])
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
-    dcc.Graph(
-        id='example',
-        figure=k
-    )
 
