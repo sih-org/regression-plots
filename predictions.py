@@ -42,7 +42,7 @@ class cloth:
         py5= py5[:,np.newaxis]
         py6= py6[:,np.newaxis]
         py7= py7[:,np.newaxis]
-        polynomial_features= PolynomialFeatures(degree=1)
+        polynomial_features= PolynomialFeatures(degree=2)
         x0_poly = polynomial_features.fit_transform(x0)
         predx=[]
         model1 = LinearRegression()
@@ -59,20 +59,36 @@ class cloth:
         model5.fit(x0_poly, y5)
         model6.fit(x0_poly, y6)
         model7.fit(x0_poly, y7)
+        diffsum=[0,0,0,0,0,0,0]
+        y1p=model1.predict(x0_poly)
+        y2p=model2.predict(x0_poly)
+        y3p=model3.predict(x0_poly)
+        y4p=model4.predict(x0_poly)
+        y5p=model5.predict(x0_poly)
+        y6p=model6.predict(x0_poly)
+        y7p=model7.predict(x0_poly)
+        error=[abs(y1p-y1),abs(y2p-y2),abs(y3p-y3),abs(y4p-y4),abs(y5p-y5),abs(y6p-y6),abs(y7p-y7)]
+        print(error)
         for data in datas:
             dump=data[1]+clothdata['Cloth Waste'][data[0]-1990]
             predx.append([dump])
-            py1[data[0]-1990]=model1.predict(polynomial_features.fit_transform(predx))
-            py2[data[0]-1990]=model2.predict(polynomial_features.fit_transform(predx))
-            py3[data[0]-1990]=model3.predict(polynomial_features.fit_transform(predx))
-            py4[data[0]-1990]=model4.predict(polynomial_features.fit_transform(predx))
-            py5[data[0]-1990]=model5.predict(polynomial_features.fit_transform(predx))
-            py6[data[0]-1990]=model6.predict(polynomial_features.fit_transform(predx))
-            py7[data[0]-1990]=model7.predict(polynomial_features.fit_transform(predx))
-        
-obj= cloth()
-print(a,b)
-obj.pedictions([[1990,500]])
+            k=data[0]-1990
+            py1[k]=model1.predict(polynomial_features.fit_transform(predx))
+            py2[k]=model2.predict(polynomial_features.fit_transform(predx))
+            py3[k]=model3.predict(polynomial_features.fit_transform(predx))
+            py4[k]=model4.predict(polynomial_features.fit_transform(predx))
+            py5[k]=model5.predict(polynomial_features.fit_transform(predx))
+            py6[k]=model6.predict(polynomial_features.fit_transform(predx))
+            py7[k]=model7.predict(polynomial_features.fit_transform(predx))
+            diffsum[0]=diffsum[0]+py1[k]-y1[k]+error[0][k]
+            diffsum[1]=diffsum[1]+py2[k]-y2[k]+error[1][k]
+            diffsum[2]=diffsum[2]+py3[k]-y3[k]+error[2][k]
+            diffsum[3]=diffsum[3]+py4[k]-y4[k]+error[3][k]
+            diffsum[4]=diffsum[4]+py5[k]-y5[k]+error[4][k]
+            diffsum[5]=diffsum[5]+py6[k]-y6[k]+error[5][k]
+            diffsum[6]=diffsum[6]+py7[k]-y7[k]+error[6][k]
+        return diffsum
+
 
         
 
