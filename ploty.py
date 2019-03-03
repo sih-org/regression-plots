@@ -38,10 +38,10 @@ model = LinearRegression()
 model.fit(x_poly, y)
 y_poly_pred = model.predict(x_poly)
 
-#rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
-#r2 = r2_score(y,y_poly_pred)
-#print(rmse)
-#print(r2)
+rmse = np.sqrt(mean_squared_error(y,y_poly_pred))
+r2 = r2_score(y,y_poly_pred)
+print(rmse)
+print(r2)
 
 
 #model.predict(polynomial_features.fit_transform(0.5))
