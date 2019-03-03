@@ -13,8 +13,6 @@ np.random.seed(0)
 class cloth:
     def predictions(self,data):
         clothdata= pd.read_csv('cloth$data.csv')
-        clothdata= pd.read_csv('cloth$data.csv')
-        clothdata1= pd.read_csv('cloth$data1.csv')
         self.x0=clothdata['Cloth Waste'][:].values
         self.y1=clothdata['commercial(co2 in tonnes)'][:].values
         self.y2=clothdata['methane_due_to_cloth'][:].values
@@ -89,28 +87,62 @@ class cloth:
     def visualize(self):
         print(self.y,self.py)
         trace1 = go.Bar(
-            x=['co2', 'methane', 'so2','n2o','Recycled','Incinerated','Discarded','ocean'],
+            x=['co2', 'methane', 'so2','n2o','Discarded','Recycled','Incinerated','cloth mix in ocean'],
             y=self.y,
-            name='actual in M tons'
+            name='Present Indian Pollutants',
+            marker=dict(
+                color='rgb(55, 83, 109)'
+                )
         )
-        trace2 = go.Bar(
-            x=['co2', 'methane', 'so2','n2o','Recycled','Incinerated','Discarded','ocean'],
+        trace2= go.Bar(
+            x=['co2', 'methane', 'so2','n2o','Discarded','Recycled','Incinerated','cloth mix in ocean'],
             y=self.py,
-            name='impact unit in kgs'
+            name='Impact of cloth on environment',
+            marker =dict(
+                color='rgb(26, 118, 255)'
+                )
         )
-
         data = [trace1, trace2]
         layout = go.Layout(
-            barmode='stack'
-        )
+            title='Effect on Pollutants',
+            xaxis=dict(
+                title='Pollutants',
+                tickfont=dict(
+                    size=14,
+                    color='rgb(107, 107, 107)'
+                )
+            ),
+            yaxis=dict(
+                titlefont=dict(
+                    size=16,
+                    color='rgb(107, 107, 107)'
+                ),
+                tickfont=dict(
+                    size=14,
+                    color='rgb(107, 107, 107)'
+                )
+            ),
+            legend=dict(
+                        x=0,
+                        y=1.0,
+                        bgcolor='rgba(255, 255, 255, 0)',
+                        bordercolor='rgba(255, 255, 255, 0)'
+                    ),
+                    barmode='group',
+                    bargap=0.15,
+                    bargroupgap=0.1
+                )
 
-        fig = go.Figure(data=data, layout=layout)
+    
+        
+
+        fig = go.Figure(data=data,layout=layout,)
         plot(fig,filename='cloth.html')
 def Cloth_Preprocessing(arr):
     b=[]
-    if(arr[0][2]=='Kilograms'):
-        a=5
-        arr[0][2]='Tonnes'
+    if(arr[0][2]=='Tonnes'):
+        arr[0][1]=arr[0][1]*1000
+        arr[0][2]='Kilograms'
     if(arr[1][1]=='Cotton'):
         b.append([arr[0][0],arr[0][1]*1.778,arr[0][1]*0.578,arr[0][1]*0.55,arr[0][1]*1.38,arr[0][1]])
     if(arr[1][1]=='Polyster'):
